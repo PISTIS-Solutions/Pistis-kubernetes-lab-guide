@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+                name: simple-cm
+                # Specify the key associated with the value
+                key: PORT
+          - name: DEBUG
+            valueFrom:
+              configMapKeyRef:
+                # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+                name: simple-cm
+                # Specify the key associated with the value
+                key: DEBUG
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: password
+        ports:
+        - containerPort: 80
+          name: http-web-svc
