@@ -2,7 +2,19 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
  name: simple-cm
- namespace: pistis-demo
+ namespace: pistis-tech-hub
 data:
   PORT: "80"
-  DEBUG:  FALSE
+  DEBUG:  "FALSE"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-creds
+  namespace: pistis-tech-hub
+data:
+  password: cGFzc3dvZGhoZGhzODg4JiYm
+  username: cGlzdGlz
+type: Opaque
